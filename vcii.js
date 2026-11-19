@@ -27,7 +27,7 @@ const revealObserver = new IntersectionObserver((entries) => {
       revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.12 });
+}, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.reveal').forEach((node) => revealObserver.observe(node));
 
@@ -41,6 +41,18 @@ const inquiryForm = document.querySelector('#inquiry-form');
 if (inquiryForm) {
   inquiryForm.addEventListener('submit', (event) => {
     event.preventDefault();
+    const f = new FormData(inquiryForm);
+    const interestLabel = inquiryForm.querySelector('#interest')?.selectedOptions[0]?.textContent || f.get('interest');
+    const subject = `VCII inquiry: ${interestLabel} from ${f.get('name')}`;
+    const body = [
+      `Name: ${f.get('name')}`,
+      `Email: ${f.get('email')}`,
+      `Institution or affiliation: ${f.get('affiliation') || '-'}`,
+      `Area of interest: ${interestLabel}`,
+      '',
+      f.get('message'),
+    ].join('\n');
+    window.location.href = `mailto:${inquiryForm.dataset.mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     const success = inquiryForm.querySelector('.form-success');
     success?.classList.add('show');
     success?.focus();

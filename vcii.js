@@ -70,3 +70,4 @@ navTops.forEach((btn) => btn.addEventListener('click', (event) => {
 }));
 document.addEventListener('click', () => closeAll());
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+

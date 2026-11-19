@@ -46,3 +46,15 @@ if (inquiryForm) {
     success?.focus();
   });
 }
+
+// Dropdowns: hover opens on desktop; click/tap toggles everywhere; Escape and outside click close.
+const navTops = document.querySelectorAll('.nav-top');
+const closeAll = (except) => navTops.forEach((b) => { if (b !== except) { b.closest('.has-sub').classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
+navTops.forEach((btn) => btn.addEventListener('click', (event) => {
+  event.stopPropagation();
+  closeAll(btn);
+  const open = btn.closest('.has-sub').classList.toggle('open');
+  btn.setAttribute('aria-expanded', String(open));
+}));
+document.addEventListener('click', () => closeAll());
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
